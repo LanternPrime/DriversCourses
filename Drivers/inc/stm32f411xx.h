@@ -231,10 +231,8 @@ typedef struct
 #define GPIOC  				((GPIO_RegDef_t*)GPIOC_BASEADDR)
 #define GPIOD  				((GPIO_RegDef_t*)GPIOD_BASEADDR)
 #define GPIOE  				((GPIO_RegDef_t*)GPIOE_BASEADDR)
-#define GPIOF  				((GPIO_RegDef_t*)GPIOF_BASEADDR)
-#define GPIOG  				((GPIO_RegDef_t*)GPIOG_BASEADDR)
 #define GPIOH  				((GPIO_RegDef_t*)GPIOH_BASEADDR)
-#define GPIOI  				((GPIO_RegDef_t*)GPIOI_BASEADDR)
+
 
 #define RCC 				((RCC_RegDef_t*)RCC_BASEADDR)
 #define EXTI				((EXTI_RegDef_t*)EXTI_BASEADDR)
@@ -265,10 +263,7 @@ typedef struct
 #define GPIOC_PCLK_EN()		(RCC->AHB1ENR |= (1 << 2))
 #define GPIOD_PCLK_EN()		(RCC->AHB1ENR |= (1 << 3))
 #define GPIOE_PCLK_EN()		(RCC->AHB1ENR |= (1 << 4))
-#define GPIOF_PCLK_EN()		(RCC->AHB1ENR |= (1 << 5))
-#define GPIOG_PCLK_EN()		(RCC->AHB1ENR |= (1 << 6))
 #define GPIOH_PCLK_EN()		(RCC->AHB1ENR |= (1 << 7))
-#define GPIOI_PCLK_EN()		(RCC->AHB1ENR |= (1 << 8))
 
 
 /*
@@ -330,6 +325,7 @@ typedef struct
 #define GPIOB_REG_RESET()               do{ (RCC->AHB1RSTR |= (1 << 1)); (RCC->AHB1RSTR &= ~(1 << 1)); }while(0)
 #define GPIOC_REG_RESET()               do{ (RCC->AHB1RSTR |= (1 << 2)); (RCC->AHB1RSTR &= ~(1 << 2)); }while(0)
 #define GPIOD_REG_RESET()               do{ (RCC->AHB1RSTR |= (1 << 3)); (RCC->AHB1RSTR &= ~(1 << 3)); }while(0)
+#define GPIOE_REG_RESET()               do{ (RCC->AHB1RSTR |= (1 << 4)); (RCC->AHB1RSTR &= ~(1 << 4)); }while(0)
 #define GPIOH_REG_RESET()               do{ (RCC->AHB1RSTR |= (1 << 7)); (RCC->AHB1RSTR &= ~(1 << 7)); }while(0)
 
 /*
@@ -342,6 +338,7 @@ typedef struct
 										(x == GPIOB)?1:\
 										(x == GPIOC)?2:\
 										(x == GPIOD)?3:\
+										(x == GPIOE)?4:\
 								        (x == GPIOH)?7:0)
 
 

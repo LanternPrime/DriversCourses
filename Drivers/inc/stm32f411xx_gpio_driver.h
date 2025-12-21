@@ -101,7 +101,7 @@ typedef struct
 /*
  * Peripheral Clock setup
  */
-void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi);
+void GPIO_PCLKCtrl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi);
 
 /*
  * Init and De-init
