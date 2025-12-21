@@ -1,12 +1,12 @@
 /*
- * stm3f407xx.h
+ * stm32f411rexx.h
  *
  *  Created on: Jan 29, 2019
  *      Author: admin
  */
 
-#ifndef INC_STM3F407XX_H_
-#define INC_STM3F407XX_H_
+#ifndef INC_STM3F411REXX_H_
+#define INC_STM3F411REXX_H_
 
 #include<stdint.h>
 
@@ -445,4 +445,4 @@ typedef struct
 #include "stm32f411xx_gpio_driver.h"
 #include "stm32f411xx_spi_driver.h"
 
-#endif /* INC_STM3F407XX_H_ */
+#endif /* INC_STM3F411REXX_H_ */

@@ -151,28 +151,24 @@ uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx , uint32_t FlagName)
  */
 void SPI_SendData(SPI_RegDef_t *pSPIx,uint8_t *pTxBuffer, uint32_t Len)
 {
-	while(Len > 0)
-	{
-		//1. wait until TXE is set
-		while(SPI_GetFlagStatus(pSPIx,SPI_TXE_FLAG)  == FLAG_RESET );
+	while(Len > 0){
+		//1. Wait utill TXE (TX Empty) is set
+		while( SPI_GetFlagStatus(pSPIx, SPI_TXE_FLAG) == FLAG_RESET);
 
-		//2. check the DFF bit in CR1
-		if( (pSPIx->CR1 & ( 1 << SPI_CR1_DFF) ) )
-		{
-			//16 bit DFF
-			//1. load the data in to the DR
-			pSPIx->DR =   *((uint16_t*)pTxBuffer);
+		//2. Check the DFF bit in CR1
+		if( (pSPIx->CR1 & (1 << SPI_CR1_DFF) ) ){
+			//16 bits DFF
+			// 1.load the data into the DR
+			pSPIx->DR = *((uint16_t*)pTxBuffer);
 			Len-=2;
 			(uint16_t*)pTxBuffer++;
-		}else
-		{
-			//8 bit DFF
-			pSPIx->DR =   *pTxBuffer;
+		} else {
+			//8bits DFF
+			pSPIx->DR = *pTxBuffer;
 			Len--;
 			pTxBuffer++;
 		}
 	}
-
 }
 
 /*********************************************************************
@@ -287,74 +283,27 @@ void SPI_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi)
  * @Note              -
 
  */
-void SPI_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority)
-{
+void SPI_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority);
 
-}
-
-
-uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIHandle,uint8_t *pTxBuffer, uint32_t Len)
-{
-
-}
+uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIHandle,uint8_t *pTxBuffer, uint32_t Len);
 
 
-uint8_t SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t Len)
-{
+uint8_t SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t Len);
 
-
-}
-
-void SPI_IRQHandling(SPI_Handle_t *pHandle)
-{
-
-}
+void SPI_IRQHandling(SPI_Handle_t *pHandle);
 
 //some helper function implementations
 
-static void  spi_txe_interrupt_handle(SPI_Handle_t *pSPIHandle)
-{
+void SPI_CloseTransmisson(SPI_Handle_t *pSPIHandle);
 
-}
-
-
-static void  spi_rxne_interrupt_handle(SPI_Handle_t *pSPIHandle)
-{
-
-
-}
-
-
-static void  spi_ovr_err_interrupt_handle(SPI_Handle_t *pSPIHandle)
-{
-
-}
-
-
-void SPI_CloseTransmisson(SPI_Handle_t *pSPIHandle)
-{
-
-}
-
-void SPI_CloseReception(SPI_Handle_t *pSPIHandle)
-{
-
-}
+void SPI_CloseReception(SPI_Handle_t *pSPIHandle);
 
 
 
-void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx)
-{
-
-}
+void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx);
 
 
-
-__weak void SPI_ApplicationEventCallback(SPI_Handle_t *pSPIHandle,uint8_t AppEv)
-{
-
-}
-
+__weak void SPI_ApplicationEventCallback(SPI_Handle_t *pSPIHandle,uint8_t AppEv);
 
 
 

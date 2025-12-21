@@ -9,7 +9,7 @@
 #define INC_stm32f411xx_GPIO_DRIVER_H_
 
 
-#include "stm32f411xx.h"
+#include "stm32f411rexx.h"
 
 /*
  * This is a Configuration structure for a GPIO pin

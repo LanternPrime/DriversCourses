@@ -8,7 +8,7 @@
 #ifndef INC_stm32f411xx_SPI_DRIVER_H_
 #define INC_stm32f411xx_SPI_DRIVER_H_
 
-#include "stm32f411xx.h"
+#include "stm32f411rexx.h"
 
 /*
  *  Configuration structure for SPIx peripheral
@@ -160,7 +160,6 @@ uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx , uint32_t FlagName);
 void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx);
 void SPI_CloseTransmisson(SPI_Handle_t *pSPIHandle);
 void SPI_CloseReception(SPI_Handle_t *pSPIHandle);
-uint8_t I2C_DeviceMode(I2C_RegDef_t *I2Cx);
 
 /*
  * Application callback
