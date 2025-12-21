@@ -1,10 +1,9 @@
 /*
- * 001_toogleLED.c
+ * 001led_toggle.c
  *
- *  Created on: Dec 21, 2025
- *      Author: octav
+ *  Created on: Feb 1, 2019
+ *      Author: admin
  */
-
 
 #include "stm32f411xx.h"
 
