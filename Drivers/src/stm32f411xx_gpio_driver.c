@@ -23,7 +23,7 @@
  * @Note              -  none
 
  */
-void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi)
+void GPIO_PCLKCtrl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi)
 {
 	if(EnorDi == ENABLE)
 	{
@@ -86,7 +86,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 
 	 //enable the peripheral clock
 
-	 GPIO_PeriClockControl(pGPIOHandle->pGPIOx, ENABLE);
+	 GPIO_PCLKCtrl(pGPIOHandle->pGPIOx, ENABLE);
 
 	//1 . configure the mode of gpio pin
 
