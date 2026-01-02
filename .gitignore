@@ -1,6 +1,2 @@
 # STM32 IDE Specific Files
 
-.cproject
-.project
-.settings
-Debug/*
