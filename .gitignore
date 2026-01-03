@@ -1,2 +1,17 @@
 # STM32 IDE Specific Files
+# Build output
+Debug/
+Release/
+build/
 
+# Eclipse / CubeIDE
+.metadata/
+.settings/
+*.launch
+
+# Eclipse index / cache
+*.log
+*.bak
+
+# CUBEIDE internal files
+STM32CubeIDE.log
