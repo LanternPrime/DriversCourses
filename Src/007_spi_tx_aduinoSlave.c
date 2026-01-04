@@ -25,27 +25,27 @@ void SPI3_GPIOInits(void){
 
 	GPIO_Handle_t SPIPins;
 	SPIPins.pGPIOx = GPIOB;
-	SPIPins.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_ALTFN;
+	SPIPins.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_ALTFUN;
 	SPIPins.GPIO_PinConfig.GPIO_PinAltFunMode = 6;
-	SPIPins.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
-	SPIPins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
-	SPIPins.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
+	SPIPins.GPIO_PinConfig.GPIO_PinOPType = GPIO_OPT_PP;
+	SPIPins.GPIO_PinConfig.GPIO_PinPuPdCtlr = GPIO_NO_PUPD;
+	SPIPins.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FST;
 
 	//SCKL
-	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_3;
+	SPIPins.GPIO_PinConfig.GPIO_PinNum = GPIO_PIN3;
 	GPIO_Init(&SPIPins);
 
 	//MOSI
-	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_5;
+	SPIPins.GPIO_PinConfig.GPIO_PinNum = GPIO_PIN5;
 	GPIO_Init(&SPIPins);
 
 	//MISO
-	//SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_4;
+	//SPIPins.GPIO_PinConfig.GPIO_PinNum = GPIO_PIN4;
 	//GPIO_Init(&SPIPins);
 
 	//NSS
 	SPIPins.pGPIOx = GPIOA;
-	SPIPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_4;
+	SPIPins.GPIO_PinConfig.GPIO_PinNum = GPIO_PIN4;
 	GPIO_Init(&SPIPins);
 
 }
@@ -71,10 +71,10 @@ void GPIOBtn_Init(void)
 	GPIO_Handle_t GPIOBtn;
 	//this is btn gpio configuration
 	GPIOBtn.pGPIOx = GPIOA;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_0;
+	GPIOBtn.GPIO_PinConfig.GPIO_PinNum = GPIO_PIN0;
 	GPIOBtn.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
-	GPIOBtn.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
+	GPIOBtn.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FST;
+	GPIOBtn.GPIO_PinConfig.GPIO_PinPuPdCtlr = GPIO_NO_PUPD;
 
 	GPIO_Init(&GPIOBtn);
 }
@@ -99,7 +99,7 @@ int main(void){
 
 	while(1){
 		//Wait till the button is pressed
-		while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NO_0));
+		while(! GPIO_ReadFromInputPin(GPIOA, GPIO_PIN0));
 
 		delay();
 
