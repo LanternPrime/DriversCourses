@@ -34,7 +34,7 @@ int main(void)
 
 	while(1)
 	{
-		GPIO_ToggleOutputPin(GPIOA,GPIO_PIN_NO_8);
+		GPIO_ToggleOutputPin(GPIOA,GPIO_PIN8);
 
 	}
 	return 0;

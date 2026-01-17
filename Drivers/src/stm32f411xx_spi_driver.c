@@ -161,10 +161,10 @@ void SPI_SendData(SPI_RegDef_t *pSPIx,uint8_t *pTxBuffer, uint32_t Len)
 			// 1.load the data into the DR
 			pSPIx->DR = *((uint16_t*)pTxBuffer);
 			Len-=2;
-			(uint16_t*)pTxBuffer++;
+			pTxBuffer += 2;
 		} else {
 			//8bits DFF
-			pSPIx->DR = *pTxBuffer;
+			*((__volatile uint8_t*)&pSPIx->DR) = *pTxBuffer;
 			Len--;
 			pTxBuffer++;
 		}
@@ -187,6 +187,24 @@ void SPI_SendData(SPI_RegDef_t *pSPIx,uint8_t *pTxBuffer, uint32_t Len)
  */
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t Len)
 {
+	while(Len > 0){
+		//1. Wait utill RXNE (RX Not Empty) is set
+		while( SPI_GetFlagStatus(pSPIx, SPI_RXNE_FLAG) == FLAG_RESET);
+
+		//2. Check the DFF bit in CR1
+		if( (pSPIx->CR1 & (1 << SPI_CR1_DFF) ) ){
+			//16 bits DFF
+			// 1.load the data from DR to RxBuffer address
+			 *((uint16_t*)pRxBuffer) = pSPIx->DR;
+			Len-=2;
+			pRxBuffer += 2;
+		} else {
+			//8bits DFF
+			*pRxBuffer = *((__volatile uint8_t*)&pSPIx->DR);
+			Len--;
+			pRxBuffer++;
+		}
+	}
 }
 
 

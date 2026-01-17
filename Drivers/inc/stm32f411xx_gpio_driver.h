@@ -96,8 +96,8 @@ void GPIO_DeInit(GPIOx_Reg_t *pGPIOx);
 //Read & Write
 uint8_t GPIO_ReadFromInputPin(GPIOx_Reg_t *pGPIOx, uint8_t PinNum);
 uint16_t GPIO_ReadFromInputPort(GPIOx_Reg_t *pGPIO);
-void GPIO_WriteFromOutputPin(GPIOx_Reg_t *pGPIOx, uint8_t PinNum, uint8_t value);
-void GPIO_WriteFromOutputPort(GPIOx_Reg_t *pGPIOx, uint8_t value);
+void GPIO_WriteToOutputPin(GPIOx_Reg_t *pGPIOx, uint8_t PinNum, uint8_t value);
+void GPIO_WriteToOutputPort(GPIOx_Reg_t *pGPIOx, uint8_t value);
 void GPIO_ToggleOutputPin(GPIOx_Reg_t *pGPIOx, uint8_t PinNum);
 
 //IRQ Config & Handling
