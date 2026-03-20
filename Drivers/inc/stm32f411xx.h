@@ -4,7 +4,7 @@
  *  Created on: 7 dic 2025
  *      Author: octav
  */
-
+#include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 #include "stm32f411xx_gpio_driver.h"
@@ -13,7 +13,8 @@
 #ifndef INC_STM32F411RETX_H_
 #define INC_STM32F411RETX_H_
 
-#define __vo volatile
+#define __vo 	volatile
+#define __weak 	__attribute__((weak))
 
 //ARM CORTEX Mx Processor NVIC ISERx Register Addr
 #define NVIC_ISER0		( (__vo uint32_t*) 0xE000E100 )
@@ -265,6 +266,12 @@ typedef struct
 #define IRQ_NO_EXTI9_5		23
 #define IRQ_NO_EXTI15_10		40
 
+#define IRQ_NO_SPI1			35
+#define IRQ_NO_SPI2			36
+#define IRQ_NO_SPI3			51
+#define IRQ_NO_SPI4			84
+#define IRQ_NO_SPI5			85
+
 /*
  * macros for all the possible priority levels
  */
@@ -319,4 +326,4 @@ typedef struct
 #define SPI_SR_BSY			7
 #define SPI_SR_FRE			8
 
-#endif /* INC_STM32F411RETX_H_ */
+#endif INC_STM32F411RETX_H_
