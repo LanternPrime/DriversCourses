@@ -101,12 +101,12 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 	//Configure the Mode
 	//Non Interrupt Mode
 	if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG){
-		pGPIOHandle->pGPIOx->MODER &= ~(3 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNum);
+		pGPIOHandle->pGPIOx->MODER &= ~(3 << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNum));
 		pGPIOHandle->pGPIOx->MODER |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNum));
 	}
 	else
 	{
-		pGPIOHandle->pGPIOx->MODER &= ~(3 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNum);
+		pGPIOHandle->pGPIOx->MODER &= ~(3 << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNum));
 		pGPIOHandle->pGPIOx->MODER |= (GPIO_MODE_IN << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNum));
 		//Interrupt Mode
 		if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_FT) {
@@ -137,15 +137,15 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle){
 	}
 
 	//Configure the Speed
-	pGPIOHandle->pGPIOx->OSPEEDR &= ~(3 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNum);
+	pGPIOHandle->pGPIOx->OSPEEDR &= ~(3 << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNum));
 	pGPIOHandle->pGPIOx->OSPEEDR |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinSpeed << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNum));
 
 	//Configure the PuPd Settings
-	pGPIOHandle->pGPIOx->PUPDR &= ~(3 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNum);
+	pGPIOHandle->pGPIOx->PUPDR &= ~(3 << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNum));
 	pGPIOHandle->pGPIOx->PUPDR |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinPuPdCtlr << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNum));
 
 	//Configure the optype
-	pGPIOHandle->pGPIOx->OTYPER &= ~(3 <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNum);
+	pGPIOHandle->pGPIOx->OTYPER &= ~(1 <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNum);
 	pGPIOHandle->pGPIOx->OTYPER |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinOPType <<  pGPIOHandle->GPIO_PinConfig.GPIO_PinNum);
 
 	//Configure the Alt Funct
