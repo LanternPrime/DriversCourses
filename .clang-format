@@ -1,21 +1,23 @@
 BasedOnStyle: LLVM
 
+# --- ESPACIADO ---
+SpaceBeforeParens: ControlStatements
+SpacesInParentheses: false
+
+# --- WHILE(); en una sola línea ---
+AllowShortLoopsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: true
+
+# --- LLAVES estilo que te gusta ---
+BreakBeforeBraces: Allman
+
+# --- INDENTACIÓN ---
 IndentWidth: 4
 UseTab: Never
 
-BreakBeforeBraces: Attach
+# --- CONTROL DE ESPACIOS ---
+SpacesInConditionalStatement: false
+SpaceAfterCStyleCast: false
 
-BraceWrapping:
-  AfterFunction: false
-  AfterControlStatement: false
-  AfterStruct: false
-  AfterEnum: false
-  AfterUnion: false
-  AfterClass: false
-  AfterNamespace: false
-  BeforeElse: false
-  BeforeCatch: false
-
-AllowShortFunctionsOnASingleLine: None
-AllowShortBlocksOnASingleLine: false
-AllowShortIfStatementsOnASingleLine: false
+# --- OTROS AJUSTES LIMPIOS ---
+ColumnLimit: 0

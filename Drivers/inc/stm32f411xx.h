@@ -4,6 +4,7 @@
  *  Created on: 7 dic 2025
  *      Author: octav
  */
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>

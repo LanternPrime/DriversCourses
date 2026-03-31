@@ -15,10 +15,10 @@
  */
 typedef struct
 {
-	uint32_t I2C_SCLSpeed;
-	uint8_t I2C_DeviceAddress;
-	uint8_t I2C_AckControl;
-	uint8_t I2C_FMDutyCycle;
+    uint32_t I2C_SCLSpeed;
+    uint8_t I2C_DeviceAddress;
+    uint8_t I2C_AckControl;
+    uint8_t I2C_FMDutyCycle;
 
 } I2C_Config_t;
 
@@ -27,16 +27,16 @@ typedef struct
  */
 typedef struct
 {
-	I2C_RegDef_t *pI2Cx;
-	I2C_Config_t I2C_Config;
-	uint8_t *pTxBuffer;	//Store the Tx Buffer Address
-	uint8_t *pRxBuffer; //Store the Rx Buffer Address
-	uint32_t TxLen;		//Store Tx Len
-	uint32_t RxLen; 	//Store Rx Len
-	uint8_t TxRxState;	//Communication State
-	uint8_t DevAddr;	//Slave/Device Address
-	uint32_t RxSize;	//Rx Size
-	uint8_t Sr;			//Repeated Start Value
+    I2C_RegDef_t *pI2Cx;
+    I2C_Config_t I2C_Config;
+    uint8_t *pTxBuffer; // Store the Tx Buffer Address
+    uint8_t *pRxBuffer; // Store the Rx Buffer Address
+    uint32_t TxLen;     // Store Tx Len
+    uint32_t RxLen;     // Store Rx Len
+    uint8_t TxRxState;  // Communication State
+    uint8_t DevAddr;    // Slave/Device Address
+    uint32_t RxSize;    // Rx Size
+    uint8_t Sr;         // Repeated Start Value
 } I2C_Handle_t;
 
 /*
@@ -80,21 +80,23 @@ typedef struct
 /*
  * @I2C_Application_States
  */
-#define I2C_READY		0
-#define I2C_BUSY_IN_RX	1
-#define I2C_BUSY_IN_TX	2
+#define I2C_READY 0
+#define I2C_BUSY_IN_RX 1
+#define I2C_BUSY_IN_TX 2
 
 /*
  * Possible SPI Application events
  */
-#define I2C_EV_TX_COMPLETE 	0
-#define I2C_EV_RX_COMPLETE 	1
-#define I2C_EV_STOP 		2
-#define I2C_ERROR_BERR		3
-#define I2C_ERROR_ARLO		4
-#define I2C_ERROR_AF		5
-#define I2C_ERROR_OVR		6
-#define I2C_ERROR_TIMEOUT	7
+#define I2C_EV_TX_COMPLETE 0
+#define I2C_EV_RX_COMPLETE 1
+#define I2C_EV_STOP 2
+#define I2C_ERROR_BERR 3
+#define I2C_ERROR_ARLO 4
+#define I2C_ERROR_AF 5
+#define I2C_ERROR_OVR 6
+#define I2C_ERROR_TIMEOUT 7
+#define I2C_EV_DATA_REQ 8
+#define I2C_EV_DATA_RCV 9
 
 /******************************************************************************************
  *								APIs supported by this driver
@@ -123,6 +125,10 @@ uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer, ui
 void I2C_CloseReceiveData(I2C_Handle_t *pI2CHandle);
 void I2C_CloseSendData(I2C_Handle_t *pI2CHandle);
 
+void I2C_SlaveSendData(I2C_RegDef_t *pI2C, uint8_t data);
+uint8_t I2C_SlaveReceiveData(I2C_RegDef_t *pI2C);
+
+void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx);
 /*
  * IRQ Configuration and ISR handling
  */

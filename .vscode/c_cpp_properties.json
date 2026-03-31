@@ -13,9 +13,7 @@
       ],
       "defines": [
         "STM32F411xE"
-      ],
-      "editor.formatOnSave": true,
-      "C_Cpp.clang_format_style": "file"
+      ]
     }
   ],
   "version": 4
