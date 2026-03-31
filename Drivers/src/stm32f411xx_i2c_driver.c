@@ -109,7 +109,7 @@ void I2C_PeriClockControl(I2C_RegDef_t *pI2Cx, uint8_t EnorDi)
 }
 
 #define FREQ16K 16000000
-#define FREQ8K 8000000
+#define FREQ8K  8000000
 
 uint16_t AHB_PreScalerTable[8] = {2, 4, 8, 16, 64, 128, 256, 512};
 uint8_t APB1_PreScalerTable[4] = {2, 4, 8, 16};

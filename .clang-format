@@ -21,3 +21,5 @@ SpaceAfterCStyleCast: false
 
 # --- OTROS AJUSTES LIMPIOS ---
 ColumnLimit: 0
+
+AlignConsecutiveMacros: true
