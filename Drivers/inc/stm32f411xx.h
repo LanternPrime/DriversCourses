@@ -11,6 +11,7 @@
 
 #include "stm32f411xx_gpio_driver.h"
 #include "stm32f411xx_i2c_driver.h"
+#include "stm32f411xx_rcc_driver.h"
 #include "stm32f411xx_spi_driver.h"
 #include "stm32f411xx_usart_driver.h"
 
@@ -354,7 +355,7 @@ typedef struct
 
 #define IRQ_NO_USART1 37
 #define IRQ_NO_USART2 38
-#define IRQ_NO_USART2 71
+#define IRQ_NO_USART6 71
 
 /*
  * macros for all the possible priority levels

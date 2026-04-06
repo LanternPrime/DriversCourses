@@ -108,66 +108,6 @@ void I2C_PeriClockControl(I2C_RegDef_t *pI2Cx, uint8_t EnorDi)
     }
 }
 
-#define FREQ16K 16000000
-#define FREQ8K  8000000
-
-uint16_t AHB_PreScalerTable[8] = {2, 4, 8, 16, 64, 128, 256, 512};
-uint8_t APB1_PreScalerTable[4] = {2, 4, 8, 16};
-
-uint32_t RCC_GetPLLOutputClk()
-{
-    /*TODO*/
-    return 0;
-}
-
-uint32_t RCC_GetPCLK1Value(void)
-{
-    uint32_t pClk1, SysClk;
-    uint8_t clksrc, tmp, AHB_Prescaler, APB1_Prescaler;
-
-    clksrc = ((RCC->CFGR >> 2) & 0x3);
-    switch (clksrc)
-    {
-    case 0:
-        SysClk = FREQ16K;
-        break;
-    case 1:
-        SysClk = FREQ8K;
-        break;
-    case 2:
-        SysClk = RCC_GetPLLOutputClk();
-        break;
-    }
-
-    // AHBP
-    tmp = ((RCC->CFGR >> 4) & 0xF);
-
-    if (tmp < 8)
-    {
-        AHB_Prescaler = 1;
-    }
-    else
-    {
-        AHB_Prescaler = AHB_PreScalerTable[tmp % 8];
-    }
-
-    // APB1
-    tmp = ((RCC->CFGR >> 4) & 0xF);
-
-    if (tmp < 4)
-    {
-        APB1_Prescaler = 1;
-    }
-    else
-    {
-        APB1_Prescaler = AHB_PreScalerTable[tmp % 4];
-    }
-
-    pClk1 = (SysClk / (AHB_Prescaler * APB1_Prescaler));
-
-    return pClk1;
-}
-
 /*
  * Init and De-init
  */
@@ -260,8 +200,7 @@ uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName)
     return FLAG_RESET;
 }
 
-void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer,
-                        uint32_t Len, uint8_t SlaveAddr, uint8_t Sr)
+void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer, uint32_t Len, uint8_t SlaveAddr, uint8_t Sr)
 {
     // 1. Generate START condition
     I2C_GenerateStartCondition(pI2CHandle->pI2Cx);
@@ -363,8 +302,7 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer,
         I2C_ManageAcking(pI2CHandle->pI2Cx, I2C_ACK_ENABLE);
 }
 
-uint8_t I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer,
-                             uint32_t Len, uint8_t SlaveAddr, uint8_t Sr)
+uint8_t I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer, uint32_t Len, uint8_t SlaveAddr, uint8_t Sr)
 {
 
     uint8_t busystate = pI2CHandle->TxRxState;
@@ -393,8 +331,7 @@ uint8_t I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer,
     return busystate;
 }
 
-uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer,
-                                uint32_t Len, uint8_t SlaveAddr, uint8_t Sr)
+uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint32_t Len, uint8_t SlaveAddr, uint8_t Sr)
 {
 
     uint8_t busystate = pI2CHandle->TxRxState;

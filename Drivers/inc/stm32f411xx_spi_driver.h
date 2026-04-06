@@ -29,8 +29,7 @@ typedef struct
  */
 typedef struct
 {
-    SPI_RegDef_t
-        *pSPIx; /*!< This holds the base address of SPIx(x:0,1,2) peripheral >*/
+    SPI_RegDef_t *pSPIx; /*!< This holds the base address of SPIx(x:0,1,2) peripheral >*/
     SPI_Config_t SPIConfig;
     uint8_t *pTxBuffer; /* !< To store the app. Tx buffer address > */
     uint8_t *pRxBuffer; /* !< To store the app. Rx buffer address > */

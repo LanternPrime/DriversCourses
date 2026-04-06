@@ -180,9 +180,8 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 
         temp1 = pGPIOHandle->GPIO_PinConfig.GPIO_PinNum / 8;
         temp2 = pGPIOHandle->GPIO_PinConfig.GPIO_PinNum % 8;
-        pGPIOHandle->pGPIOx->AFR[temp1] &= ~(0xF << temp2);
-        pGPIOHandle->pGPIOx->AFR[temp1] |=
-            (pGPIOHandle->GPIO_PinConfig.GPIO_PinAltFunMode << (4 * temp2));
+        pGPIOHandle->pGPIOx->AFR[temp1] &= ~(0xF << (4 * temp2));
+        pGPIOHandle->pGPIOx->AFR[temp1] |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinAltFunMode << (4 * temp2));
     }
 }
 /*********************************************************************
