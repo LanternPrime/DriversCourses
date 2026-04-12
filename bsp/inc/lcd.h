@@ -44,4 +44,8 @@ void lcd_init(void);
 #define LCD_CMD_DOFC_SCB    0x0C // Sets entire display (D) on/off, cursor on/off (C), and blinking of cursor position character(B). (0000 1 D C B)
 #define LCD_CMD_4DL_2N_5X8F 0x28 /* Sets interface data length (DL), number of display lines (N), and character font (F).*/
 
+/* LCD SYMBOLS*/
+#define LCD_HEART 0
+#define LCD_SMILE 1
+
 #endif /* INC_lcd_H_ */

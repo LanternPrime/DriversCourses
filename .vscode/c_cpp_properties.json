@@ -4,8 +4,14 @@
       "name": "STM32",
       "compilerPath": "C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/bin/arm-none-eabi-gcc.exe",
       "intelliSenseMode": "windows-gcc-arm",
+      "configurationProvider": "ms-vscode.cpptools",
       "cStandard": "c11",
+      "cppStandard": "c++17",
       "includePath": [
+        "${workspaceFolder}/Drivers/inc",
+        "${workspaceFolder}/bsp/inc",
+        "${workspaceFolder}/Inc",
+        "${workspaceFolder}/inc",
         "${workspaceFolder}/**",
         "C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/lib/gcc/arm-none-eabi/10.3.1/include",
         "C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2021.10/lib/gcc/arm-none-eabi/10.3.1/include-fixed",
@@ -13,7 +19,17 @@
       ],
       "defines": [
         "STM32F411xE"
-      ]
+      ],
+      "browse": {
+        "path": [
+          "${workspaceFolder}/Drivers/inc",
+          "${workspaceFolder}/bsp/inc",
+          "${workspaceFolder}/Inc",
+          "${workspaceFolder}/inc",
+          "${workspaceFolder}"
+        ],
+        "limitSymbolsToIncludedHeaders": true
+      }
     }
   ],
   "version": 4

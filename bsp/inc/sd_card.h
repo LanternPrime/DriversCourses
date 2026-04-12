@@ -7,7 +7,18 @@
 
 #ifndef INC_SD_CARD_H_
 #define INC_SD_CARD_H_
-#include "../Drivers/inc/stm32f411xx.h"
+#include "stm32f411xx.h"
+
+typedef enum
+{
+    SD_OK = 0,
+    SD_ERROR,
+    SD_ERR_CMD0,
+    SD_ERR_CMD8,
+    SD_ERR_CMD16,
+    SD_TIMEOUT,
+    SD_ERR_ACMD41
+} SD_Status_t;
 
 typedef struct
 {
@@ -15,6 +26,20 @@ typedef struct
     uint8_t addressing_mode;
     uint32_t ocr;
 } SD_CardInfo_t;
+
+SD_Status_t SDcard_init(SD_CardInfo_t *card);
+void SD_SendInitialClockTrain(void);
+void SD_SendCommand(uint8_t cmd, uint32_t arg, uint8_t crc);
+uint8_t SD_WaitByte(uint8_t expected, uint32_t timeout);
+SD_Status_t SD_GoIdleState(void);
+SD_Status_t SD_SendIfCond(uint8_t *R7);
+SD_Status_t SD_SendAppOpCond(void);
+SD_Status_t SD_ReadOCR(uint8_t *R3, uint32_t *ocr);
+
+SD_Status_t SD_SetBlockLen(uint32_t len);
+SD_Status_t SD_ReadSingleBlock(SD_CardInfo_t *sd_Handle, uint32_t addr, uint8_t *buffer);
+SD_Status_t SD_WriteSingleBlock(SD_CardInfo_t *sd_Handle, uint32_t addr, uint8_t *buffer);
+
 // TYPE
 #define SD_CARD_SDHC    1 // HIGH CAPACITY SD CARD
 #define SD_CARD_SDSC_V2 0 // STANDARD CAPACITY SD CARD
@@ -44,28 +69,7 @@ typedef struct
 #define SD_R1_IDLE  0x01
 #define SD_R1_READY 0x00
 #define SD_CMD8_OK  0xAA
-#define SD_OK       0
 
 #define SD_WRITE_TOKEN 0xFE
-
-#define SD_ERROR      -1
-#define SD_ERR_CMD0   -1
-#define SD_ERR_CMD8   -2
-#define SD_ERR_CMD16  -2
-#define SD_TIMEOUT    -3
-#define SD_ERR_ACMD41 -4
-
-uint8_t SDcard_init(SD_CardInfo_t *card);
-void SD_SendInitialClockTrain(void);
-void SD_SendCommand(uint8_t cmd, uint32_t arg, uint8_t crc);
-uint8_t SD_WaitByte(uint8_t expected, uint32_t timeout);
-uint8_t SD_GoIdleState(void);
-uint8_t SD_SendIfCond(uint8_t *R7);
-uint8_t SD_SendAppOpCond(void);
-uint8_t SD_ReadOCR(uint8_t *R3, uint32_t *ocr);
-
-uint8_t SD_SetBlockLen(uint32_t len);
-uint8_t SD_ReadSingleBlock(SD_CardInfo_t *sd_Handle, uint32_t addr, uint8_t *buffer);
-uint8_t SD_WriteSingleBlock(SD_CardInfo_t *sd_Handle, uint32_t addr, uint8_t *buffer);
 
 #endif /* INC_SD_CARD_H_ */

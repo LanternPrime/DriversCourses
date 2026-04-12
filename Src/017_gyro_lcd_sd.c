@@ -4,9 +4,9 @@
  *  Created on: 6 abr 2026
  *      Author: octav
  */
-#include "../bsp/inc/lcd.h"
-#include "../bsp/inc/mpu_6050.h"
-#include "../bsp/inc/sd_card.h"
+#include "lcd.h"
+#include "mpu_6050.h"
+#include "sd_card.h"
 
 MPU6050_Handle_t mpu6050Handler;
 I2C_Handle_t hi2c_gyro;
@@ -21,15 +21,6 @@ void delay(void)
 {
     for (uint32_t i = 0; i < 500000 / 2; i++);
 }
-uint8_t heart[8] = {
-    0b00000,
-    0b01010,
-    0b11111,
-    0b11111,
-    0b01110,
-    0b01110,
-    0b00100,
-    0b00000};
 
 void MPU6050_PinConfig(void)
 {
@@ -125,6 +116,7 @@ int main(void)
     {
         while (GPIO_ReadFromInputPin(GPIOC, GPIO_PIN13));
         delay();
+
         memset(buffer, 0x00, sizeof(buffer));
         SD_WriteSingleBlock(&card, 10, message);
         SD_ReadSingleBlock(&card, 10, buffer);
@@ -132,9 +124,9 @@ int main(void)
         lcd_display_clear();
         lcd_set_cursor(1, 3);
         lcd_print_string(buffer);
-        lcd_save_char(heart, 0);
         lcd_set_cursor(2, 8);
-        lcd_print_char(0);
+        lcd_print_char(LCD_HEART);
+        lcd_print_char(LCD_SMILE);
     }
     return 0;
 }

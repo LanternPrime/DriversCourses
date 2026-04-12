@@ -5,7 +5,7 @@
  *      Author: octav
  */
 
-#include "../bsp/inc/sd_card.h"
+#include "sd_card.h"
 static void mdelay(uint32_t cnt);
 
 static void mdelay(uint32_t cnt)
@@ -69,9 +69,10 @@ void SPI1_init(void)
     SPI_PeripheralControl(SPI1, ENABLE);
 }
 
-uint8_t SDcard_init(SD_CardInfo_t *card)
+SD_Status_t SDcard_init(SD_CardInfo_t *card)
 {
-    uint8_t res, timeout = 10;
+	SD_Status_t res;
+	uint8_t timeout = 10;
     uint8_t response_data[4] = {0}, ccs;
     uint32_t ocr = 0;
 
@@ -144,15 +145,17 @@ void SD_SendCommand(uint8_t cmd, uint32_t arg, uint8_t crc)
     SPI_TransferByte(SPI1Handler.pSPIx, crc);
 }
 
-uint8_t SD_GoIdleState(void) // CMD0
+SD_Status_t SD_GoIdleState(void) // CMD0
 {
-    uint8_t res;
+    SD_Status_t res;
     GPIO_WriteToOutputPin(GPIOA, GPIO_PIN4, GPIO_PIN_RESET);
     SPI_TransferByte(SPI1Handler.pSPIx, 0xFF);
 
     SD_SendCommand(SD_CMD0, SD_ARG_INIT, SD_CRC1);
 
-    res = SD_WaitByte(0x01, 50);
+    res = (SD_Status_t)SD_WaitByte(0x01, 50);
+    if (res != SD_R1_IDLE)
+        return SD_ERROR;
 
     GPIO_WriteToOutputPin(GPIOA, GPIO_PIN4, GPIO_PIN_SET);
     SPI_TransferByte(SPI1Handler.pSPIx, 0xFF);
@@ -160,7 +163,7 @@ uint8_t SD_GoIdleState(void) // CMD0
     return res;
 }
 
-uint8_t SD_SendIfCond(uint8_t *R7) // CMD8
+SD_Status_t SD_SendIfCond(uint8_t *R7) // CMD8
 {
     uint8_t r1;
     GPIO_WriteToOutputPin(GPIOA, GPIO_PIN4, GPIO_PIN_RESET);
@@ -183,7 +186,7 @@ uint8_t SD_SendIfCond(uint8_t *R7) // CMD8
     return r1;
 }
 
-uint8_t SD_SendAppOpCond(void) // CMD55 && ACMD41
+SD_Status_t SD_SendAppOpCond(void) // CMD55 && ACMD41
 {
     uint8_t res;
     uint8_t timeout = 25;
@@ -220,7 +223,7 @@ uint8_t SD_SendAppOpCond(void) // CMD55 && ACMD41
     return res;
 }
 
-uint8_t SD_ReadOCR(uint8_t *R3, uint32_t *ocr) // OCR
+SD_Status_t SD_ReadOCR(uint8_t *R3, uint32_t *ocr) // OCR
 {
     uint8_t res;
     GPIO_WriteToOutputPin(GPIOA, GPIO_PIN4, GPIO_PIN_RESET);
@@ -247,7 +250,7 @@ uint8_t SD_ReadOCR(uint8_t *R3, uint32_t *ocr) // OCR
     return res;
 }
 
-uint8_t SD_SetBlockLen(uint32_t len) // CMD16
+SD_Status_t SD_SetBlockLen(uint32_t len) // CMD16
 {
     uint8_t res;
     GPIO_WriteToOutputPin(GPIOA, GPIO_PIN4, GPIO_PIN_RESET);
@@ -256,14 +259,16 @@ uint8_t SD_SetBlockLen(uint32_t len) // CMD16
     SD_SendCommand(SD_CMD16, len, SD_CRC1);
 
     res = SD_WaitByte(SD_R1_READY, 50);
+    if (res != SD_R1_READY)
+        return SD_ERROR;
 
     GPIO_WriteToOutputPin(GPIOA, GPIO_PIN4, GPIO_PIN_SET);
     SPI_TransferByte(SPI1Handler.pSPIx, 0xFF);
 
-    return res;
+    return SD_OK;
 }
 
-uint8_t SD_ReadSingleBlock(SD_CardInfo_t *sd_Handle, uint32_t addr, uint8_t *buffer) // CMD17
+SD_Status_t SD_ReadSingleBlock(SD_CardInfo_t *sd_Handle, uint32_t addr, uint8_t *buffer) // CMD17
 {
     uint8_t res;
     GPIO_WriteToOutputPin(GPIOA, GPIO_PIN4, GPIO_PIN_RESET);
@@ -304,7 +309,7 @@ uint8_t SD_ReadSingleBlock(SD_CardInfo_t *sd_Handle, uint32_t addr, uint8_t *buf
     return SD_OK;
 }
 
-uint8_t SD_WriteSingleBlock(SD_CardInfo_t *sd_Handle, uint32_t addr, uint8_t *buffer) // CMD17
+SD_Status_t SD_WriteSingleBlock(SD_CardInfo_t *sd_Handle, uint32_t addr, uint8_t *buffer) // CMD17
 {
     uint8_t res, timeout = 25;
     GPIO_WriteToOutputPin(GPIOA, GPIO_PIN4, GPIO_PIN_RESET);

@@ -7,6 +7,26 @@
 
 #include "../bsp/inc/lcd.h"
 
+uint8_t heart[8] = {
+    0b00000,
+    0b01010,
+    0b11111,
+    0b11111,
+    0b01110,
+    0b01110,
+    0b00100,
+    0b00000};
+
+uint8_t smile[8] = {
+    0b11011,
+    0b00000,
+    0b01010,
+    0b01010,
+    0b01010,
+    0b00000,
+    0b10001,
+    0b01110};
+
 static void lcd_enable(void);
 static void WriteDLines(uint8_t value);
 static void mdelay(uint32_t cnt);
@@ -116,6 +136,9 @@ void lcd_init(void)
     /* Entry Mode Set */
     lcd_send_command(LCD_CMD_EMODE_INC);
     mdelay(2);
+
+    lcd_save_char(heart, 0);
+    lcd_save_char(smile, 1);
 }
 
 void lcd_display_clear(void)
