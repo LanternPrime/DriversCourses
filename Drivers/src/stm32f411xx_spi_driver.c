@@ -181,6 +181,33 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len)
     }
 }
 /*********************************************************************
+ * @fn      		  - SPI_TransferByte
+ *
+ * @brief             -
+ *
+ * @param[in]         -
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            -
+ *
+ * @Note              - This is blocking call
+
+ */
+uint8_t SPI_TransferByte(SPI_RegDef_t *pSPIx, uint8_t txByte)
+{
+    // 1. Wait utill TXE (TX Empty) is set
+    while (SPI_GetFlagStatus(pSPIx, SPI_TXE_FLAG) == FLAG_RESET);
+
+    // 8bits DFF
+    *((__volatile uint8_t *)&pSPIx->DR) = txByte;
+
+    while (SPI_GetFlagStatus(pSPIx, SPI_RXNE_FLAG) == FLAG_RESET);
+
+    return *((__volatile uint8_t *)&pSPIx->DR);
+}
+
+/*********************************************************************
  * @fn      		  - SPI_ReceiveData
  *
  * @brief             -

@@ -136,6 +136,8 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t Len);
 uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len);
 uint8_t SPI_ReceiveDataIT(SPI_Handle_t *pSPIx, uint8_t *pRxBuffer, uint32_t Len);
 
+uint8_t SPI_TransferByte(SPI_RegDef_t *pSPIx, uint8_t txByte);
+
 /*
  * IRQ Configuration and ISR handling
  */

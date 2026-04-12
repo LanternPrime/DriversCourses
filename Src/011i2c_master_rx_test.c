@@ -6,15 +6,15 @@
  */
 #include "stm32f411xx.h"
 
-#define MY_ADDR 0x61
+#define MY_ADDR    0x61
 #define SLAVE_ADDR 0x68
 
-#define LOW 0
+#define LOW         0
 #define BTN_PRESSED LOW
 
-void delay(void) {
-    for (uint32_t i = 0; i < 500000 / 2; i++)
-        ;
+void delay(void)
+{
+    for (uint32_t i = 0; i < 500000 / 2; i++);
 }
 
 I2C_Handle_t I2C1Handler;
@@ -22,11 +22,11 @@ uint8_t rx_data[sizeof(size_t)];
 
 /*
  * PB8 -> SCL
- * PB7
- * -> SDA
+ * PB7 -> SDA
  * */
 
-void I2C1_GPIOInits(void) {
+void I2C1_GPIOInits(void)
+{
 
     GPIO_Handle_t I2CPins;
     I2CPins.pGPIOx = GPIOB;
@@ -45,7 +45,8 @@ void I2C1_GPIOInits(void) {
     GPIO_Init(&I2CPins);
 }
 
-void I2C1_Inits(void) {
+void I2C1_Inits(void)
+{
 
     I2C1Handler.pI2Cx = I2C1;
     I2C1Handler.I2C_Config.I2C_AckControl = I2C_ACK_ENABLE;
@@ -56,7 +57,8 @@ void I2C1_Inits(void) {
     I2C_Init(&I2C1Handler);
 }
 
-void GPIOBtn_Init(void) {
+void GPIOBtn_Init(void)
+{
     GPIO_Handle_t GPIOBtn;
 
     // this is btn gpio configuration
@@ -69,7 +71,8 @@ void GPIOBtn_Init(void) {
     GPIO_Init(&GPIOBtn);
 }
 
-int main(void) {
+int main(void)
+{
 
     uint8_t cmdCode, len;
 
@@ -86,10 +89,10 @@ int main(void) {
     // ACK bit is made 1, after PE = 1
     I2C_ManageAcking(I2C1, ENABLE);
 
-    while (1) {
+    while (1)
+    {
         // wait till button is pressed
-        while (GPIO_ReadFromInputPin(GPIOC, GPIO_PIN13))
-            ;
+        while (GPIO_ReadFromInputPin(GPIOC, GPIO_PIN13));
 
         // to avoid button de-bouncing related issues 200ms of delay
         delay();

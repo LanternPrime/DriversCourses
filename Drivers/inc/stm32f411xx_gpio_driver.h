@@ -46,6 +46,9 @@ typedef struct
 #define GPIO_PIN14 14
 #define GPIO_PIN15 15
 
+#define GPIO_PIN_RESET 0
+#define GPIO_PIN_SET   1
+
 /*
  * @GPIO_PIN_MODES
  * GPIO Pin Possible Modes
