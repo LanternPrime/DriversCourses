@@ -13,6 +13,7 @@ I2C_Handle_t hi2c_gyro;
 SD_CardInfo_t card;
 
 uint8_t buffer[512];
+uint8_t csd[16];
 uint8_t message[512];
 uint8_t data;
 
@@ -95,7 +96,7 @@ void GPIO_PinInit(void)
 
 void led_ok(uint8_t data)
 {
-    if (data == SD_OK)
+    if (data == 0x1)
         GPIO_WriteToOutputPin(GPIOA, GPIO_PIN9, HIGH); // OK
     else
         GPIO_WriteToOutputPin(GPIOA, GPIO_PIN8, HIGH); // ERROR
@@ -103,15 +104,14 @@ void led_ok(uint8_t data)
 
 int main(void)
 {
-    uint8_t last_block = 10;
+    uint8_t last_block = 9;
 
     // USER BTN & LEDS
     GPIO_PinInit();
     lcd_init();
 
     lcd_print_string((uint8_t *)"..SDCARD Init..\0");
-    data = SDcard_init(&card);
-    led_ok(data);
+    SDcard_init(&card);
 
     while (1)
     {
@@ -119,18 +119,22 @@ int main(void)
         delay();
         for (size_t i = 0; i < 11; i++)
         {
+            last_block++;
             memset(message, 0, sizeof(message));
             sprintf((char *)message, "Hola Octavio %d", i);
-            SD_WriteSingleBlock(&card, last_block++, message);
+            SD_WriteSingleBlock(&card, last_block, message);
         }
-        last_block--;
-        SD_ReadSingleBlock(&card, last_block, buffer);
+
         lcd_display_clear();
+        SD_ReadSingleBlock(&card, last_block, buffer);
         lcd_set_cursor(1, 1);
         lcd_print_string(buffer);
-        lcd_set_cursor(2, 8);
-        lcd_print_char(LCD_HEART);
-        lcd_print_char(LCD_SMILE);
+        SD_ReadCSD(&card, csd);
+        sprintf((char *)message, "%ld Mb", (uint32_t)card.capacity);
+        lcd_set_cursor(2, 1);
+        lcd_print_string(message);
+        // lcd_print_char(LCD_HEART);
+        // lcd_print_char(LCD_SMILE);
     }
     return 0;
 }

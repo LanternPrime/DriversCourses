@@ -8,6 +8,13 @@
 #ifndef INC_SD_CARD_H_
 #define INC_SD_CARD_H_
 #include "stm32f411xx.h"
+typedef struct
+{
+    uint8_t type;
+    uint8_t addressing_mode;
+    uint32_t ocr;
+    uint32_t capacity_mib;
+} SD_CardInfo_t;
 
 typedef enum
 {
@@ -19,13 +26,6 @@ typedef enum
     SD_TIMEOUT,
     SD_ERR_ACMD41
 } SD_Status_t;
-
-typedef struct
-{
-    uint8_t type;
-    uint8_t addressing_mode;
-    uint32_t ocr;
-} SD_CardInfo_t;
 
 SD_Status_t SDcard_init(SD_CardInfo_t *card);
 void SD_SendInitialClockTrain(void);
@@ -39,6 +39,8 @@ SD_Status_t SD_ReadOCR(uint8_t *R3, uint32_t *ocr);
 SD_Status_t SD_SetBlockLen(uint32_t len);
 SD_Status_t SD_ReadSingleBlock(SD_CardInfo_t *sd_Handle, uint32_t addr, uint8_t *buffer);
 SD_Status_t SD_WriteSingleBlock(SD_CardInfo_t *sd_Handle, uint32_t addr, uint8_t *buffer);
+
+SD_Status_t SD_ReadCSD(SD_CardInfo_t *sd_Handle, uint8_t *buffer);
 
 // TYPE
 #define SD_CARD_SDHC    1 // HIGH CAPACITY SD CARD
@@ -56,6 +58,7 @@ SD_Status_t SD_WriteSingleBlock(SD_CardInfo_t *sd_Handle, uint32_t addr, uint8_t
 #define SD_ACMD41 0x29
 #define SD_CMD0   0x00
 #define SD_CMD8   0x08
+#define SD_CMD9   0x09
 #define SD_CMD16  0x10
 #define SD_CMD17  0x11
 #define SD_CMD24  0x18

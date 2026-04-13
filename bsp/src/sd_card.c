@@ -367,6 +367,67 @@ SD_Status_t SD_WriteSingleBlock(SD_CardInfo_t *sd_Handle, uint32_t addr, uint8_t
     return SD_OK;
 }
 
+SD_Status_t SD_ReadCSD(SD_CardInfo_t *sd_Handle, uint8_t *csd) // CMD9
+{
+    uint8_t res;
+    uint32_t c_size;
+    GPIO_WriteToOutputPin(GPIOA, GPIO_PIN4, GPIO_PIN_RESET);
+    SPI_TransferByte(SPI1Handler.pSPIx, 0xFF);
+
+    SD_SendCommand(SD_CMD9, SD_ARG_INIT, SD_CRCDMMY);
+
+    res = SD_WaitByte(SD_R1_READY, 50);
+    if (res != SD_R1_READY)
+    {
+        GPIO_WriteToOutputPin(GPIOA, GPIO_PIN4, GPIO_PIN_SET);
+        SPI_TransferByte(SPI1Handler.pSPIx, 0xFF);
+        return SD_ERROR;
+    }
+
+    res = SD_WaitByte(0xFE, 50); // Wait 0xFE Data Token
+    if (res != 0xFE)
+    {
+        GPIO_WriteToOutputPin(GPIOA, GPIO_PIN4, GPIO_PIN_SET);
+        SPI_TransferByte(SPI1Handler.pSPIx, 0xFF);
+        return SD_ERROR;
+    }
+
+    memset(csd, 0, 16);
+    for (size_t i = 0; i < 16; i++)
+    {
+        csd[i] = SPI_TransferByte(SPI1Handler.pSPIx, 0xFF);
+    }
+
+    uint8_t csd_structure = (csd[0] >> 6) & 0x03;
+    if (csd_structure == 0x01)
+    {
+        // CSD versión 2.0 (SDHC/SDXC)
+        c_size = ((uint32_t)(csd[7] & 0x3F) << 16) |
+                 ((uint32_t)csd[8] << 8) |
+                 csd[9];
+        sd_Handle->capacity_mib = (c_size + 1) * 512ULL; // Capacity in KB
+        sd_Handle->capacity_mib /= (1024ULL);            // Capacity in MiB
+    }
+    else if (csd_structure == 0x00)
+    {
+        // TODO CSD versión 1.0
+        c_size = ((uint32_t)(csd[6] & 0x03) << 10) |
+                 ((uint32_t)csd[7] << 2) |
+                 ((csd[8] & 0xC0) >> 6);
+        // sd_Handle->capacity = ;
+    }
+    else
+        return SD_ERROR;
+
+    SPI_TransferByte(SPI1Handler.pSPIx, 0xFF); // CRC
+    SPI_TransferByte(SPI1Handler.pSPIx, 0xFF); // CRC 2
+
+    GPIO_WriteToOutputPin(GPIOA, GPIO_PIN4, GPIO_PIN_SET);
+    SPI_TransferByte(SPI1Handler.pSPIx, 0xFF);
+
+    return SD_OK;
+}
+
 uint8_t SD_WaitByte(uint8_t expected, uint32_t timeout)
 {
     uint8_t res = 0xFF;
