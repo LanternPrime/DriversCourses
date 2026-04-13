@@ -12,9 +12,8 @@ MPU6050_Handle_t mpu6050Handler;
 I2C_Handle_t hi2c_gyro;
 SD_CardInfo_t card;
 
-uint8_t buffer[512] = {0};
-uint8_t message[] = "Hola Octavio\0";
-char screenText[16];
+uint8_t buffer[512];
+uint8_t message[512];
 uint8_t data;
 
 void delay(void)
@@ -104,10 +103,12 @@ void led_ok(uint8_t data)
 
 int main(void)
 {
+    uint8_t last_block = 10;
+
     // USER BTN & LEDS
     GPIO_PinInit();
-
     lcd_init();
+
     lcd_print_string((uint8_t *)"..SDCARD Init..\0");
     data = SDcard_init(&card);
     led_ok(data);
@@ -116,13 +117,16 @@ int main(void)
     {
         while (GPIO_ReadFromInputPin(GPIOC, GPIO_PIN13));
         delay();
-
-        memset(buffer, 0x00, sizeof(buffer));
-        SD_WriteSingleBlock(&card, 10, message);
-        SD_ReadSingleBlock(&card, 10, buffer);
-
+        for (size_t i = 0; i < 11; i++)
+        {
+            memset(message, 0, sizeof(message));
+            sprintf((char *)message, "Hola Octavio %d", i);
+            SD_WriteSingleBlock(&card, last_block++, message);
+        }
+        last_block--;
+        SD_ReadSingleBlock(&card, last_block, buffer);
         lcd_display_clear();
-        lcd_set_cursor(1, 3);
+        lcd_set_cursor(1, 1);
         lcd_print_string(buffer);
         lcd_set_cursor(2, 8);
         lcd_print_char(LCD_HEART);

@@ -71,8 +71,8 @@ void SPI1_init(void)
 
 SD_Status_t SDcard_init(SD_CardInfo_t *card)
 {
-	SD_Status_t res;
-	uint8_t timeout = 10;
+    SD_Status_t res;
+    uint8_t timeout = 10;
     uint8_t response_data[4] = {0}, ccs;
     uint32_t ocr = 0;
 
@@ -295,6 +295,7 @@ SD_Status_t SD_ReadSingleBlock(SD_CardInfo_t *sd_Handle, uint32_t addr, uint8_t 
         return SD_ERROR;
     }
 
+    memset(buffer, 0, 512);
     for (size_t i = 0; i < 512; i++)
     {
         buffer[i] = SPI_TransferByte(SPI1Handler.pSPIx, 0xFF);
