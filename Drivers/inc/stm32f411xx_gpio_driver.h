@@ -107,4 +107,5 @@ void GPIO_IRQPriorityConfig(uint8_t IRQNum, uint8_t IRQPriority);
 void GPIO_IRQConfig(uint8_t IRQNum, uint8_t ENoDI);
 void GPIO_IRQHandling(uint8_t PinNum);
 
+void GPIO_DigitalPin(uint8_t mode, GPIOx_Reg_t *port, uint8_t pin);
 #endif /* INC_STM32F411RETX_GPIO_DRIVER_H_ */

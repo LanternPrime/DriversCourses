@@ -79,11 +79,14 @@
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.objcopy.symbolsrec.800292711" name="MCU Output Converter Motorola S-rec with symbols" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.objcopy.symbolsrec"/>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.532880565.2088843806" name="018_lcd_rtc.c" rcbsApplicability="disable" resourcePath="Src/018_lcd_rtc.c" toolsToInvoke="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.252689618.1667443290">
+						<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.252689618.1667443290" name="MCU/MPU GCC Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.252689618"/>
+					</fileInfo>
 					<fileInfo id="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.532880565.123824329" name="sd_card.h" rcbsApplicability="disable" resourcePath="bsp/inc/sd_card.h" toolsToInvoke=""/>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Inc"/>
-						<entry excluding="001led_toggle.c|015_uart_tx.c|002led_button.c|012i2c_master_rx_irq.c|011i2c_master_rx_test.c|010i2c_master_tx_test.c|008spi_cmd_handling.c|004gpio_freq.c|007_spi_tx_aduinoSlave.c|006_spi_tx_test.c|005button_interrupt.c|003led_button_ext.c|main.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
+						<entry excluding="016_usartIT_rx.c|019_lcd_blue.c|017_gyro_lcd_sd.c|001led_toggle.c|015_uart_tx.c|002led_button.c|012i2c_master_rx_irq.c|011i2c_master_rx_test.c|010i2c_master_tx_test.c|008spi_cmd_handling.c|004gpio_freq.c|007_spi_tx_aduinoSlave.c|006_spi_tx_test.c|005button_interrupt.c|003led_button_ext.c|main.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Startup"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="bsp"/>
 					</sourceEntries>

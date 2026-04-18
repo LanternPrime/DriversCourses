@@ -414,3 +414,17 @@ void GPIO_IRQHandling(uint8_t PinNum)
     if (EXTI->PR & (1 << PinNum))
         EXTI->PR |= (1 << PinNum);
 }
+
+void GPIO_DigitalPin(uint8_t mode, GPIOx_Reg_t *port, uint8_t pin)
+{
+    GPIO_Handle_t GpioPin;
+    // this gpio configuration
+    GpioPin.pGPIOx = port;
+    GpioPin.GPIO_PinConfig.GPIO_PinMode = mode;
+    GpioPin.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FST;
+    GpioPin.GPIO_PinConfig.GPIO_PinOPType = GPIO_OPT_PP;
+    GpioPin.GPIO_PinConfig.GPIO_PinPuPdCtlr = GPIO_NO_PUPD;
+
+    GpioPin.GPIO_PinConfig.GPIO_PinNum = pin;
+    GPIO_Init(&GpioPin);
+}

@@ -4,12 +4,10 @@
  *  Created on: 6 abr 2026
  *      Author: octav
  */
+#include "ds1307.h"
 #include "lcd.h"
-#include "mpu_6050.h"
 #include "sd_card.h"
 
-MPU6050_Handle_t mpu6050Handler;
-I2C_Handle_t hi2c_gyro;
 SD_CardInfo_t card;
 
 uint8_t buffer[512];
@@ -20,50 +18,6 @@ uint8_t data;
 void delay(void)
 {
     for (uint32_t i = 0; i < 500000 / 2; i++);
-}
-
-void MPU6050_PinConfig(void)
-{
-    GPIO_Handle_t I2C_Pins;
-    I2C_Pins.pGPIOx = GPIOB;
-    I2C_Pins.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_ALTFUN;
-    I2C_Pins.GPIO_PinConfig.GPIO_PinAltFunMode = 4;
-    I2C_Pins.GPIO_PinConfig.GPIO_PinOPType = GPIO_OPT_OD;
-    I2C_Pins.GPIO_PinConfig.GPIO_PinPuPdCtlr = GPIO_PIN_PU;
-    I2C_Pins.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FST;
-    // SCL
-    I2C_Pins.GPIO_PinConfig.GPIO_PinNum = GPIO_PIN6;
-    GPIO_Init(&I2C_Pins);
-
-    // SDA
-    I2C_Pins.GPIO_PinConfig.GPIO_PinNum = GPIO_PIN7;
-    GPIO_Init(&I2C_Pins);
-}
-
-void MPU6050_I2C_Config(I2C_Handle_t *hi2c_gyro)
-{
-    hi2c_gyro->pI2Cx = MPU6050_I2C;
-    hi2c_gyro->I2C_Config.I2C_AckControl = MPU6050_I2C_ACKCTRL;
-    hi2c_gyro->I2C_Config.I2C_DeviceAddress = MPU6050_I2C_DEVICE_ADDR;
-    hi2c_gyro->I2C_Config.I2C_SCLSpeed = MPU6050_I2C_SCLSPEED;
-    hi2c_gyro->I2C_Config.I2C_FMDutyCycle = MPU6050_I2C_DUTYCYCLE;
-    I2C_Init(hi2c_gyro);
-
-    I2C_PeripheralControl(hi2c_gyro->pI2Cx, ENABLE);
-}
-
-void MPU6050_Setup(MPU6050_Handle_t *mpu6050Handler, I2C_Handle_t *hi2c_gyro)
-{
-    // Initialize GPIO to I2C Pins
-    MPU6050_PinConfig();
-    // Initialize I2C Peripheral
-    MPU6050_I2C_Config(hi2c_gyro);
-    mpu6050Handler->pI2CHandle = hi2c_gyro;
-    mpu6050Handler->config.deviceAddr = hi2c_gyro->I2C_Config.I2C_DeviceAddress;
-    mpu6050Handler->config.gyro_full_scale = MPU6050_GYRO_SCALE_250;
-    mpu6050Handler->config.sample_rate_divider = 9;
-    mpu6050Handler->config.dlpf_config = MPU6050_DLPF_CFG_3;
-    MPU6050_Init(mpu6050Handler);
 }
 
 void GPIO_PinInit(void)
@@ -96,7 +50,7 @@ void GPIO_PinInit(void)
 
 void led_ok(uint8_t data)
 {
-    if (data == 0x1)
+    if (data == 0x0)
         GPIO_WriteToOutputPin(GPIOA, GPIO_PIN9, HIGH); // OK
     else
         GPIO_WriteToOutputPin(GPIOA, GPIO_PIN8, HIGH); // ERROR
@@ -105,13 +59,14 @@ void led_ok(uint8_t data)
 int main(void)
 {
     uint8_t last_block = 9;
-
     // USER BTN & LEDS
     GPIO_PinInit();
     lcd_init();
 
     lcd_print_string((uint8_t *)"..SDCARD Init..\0");
     SDcard_init(&card);
+    data = DS1307_init();
+    led_ok(data);
 
     while (1)
     {
@@ -119,10 +74,9 @@ int main(void)
         delay();
         for (size_t i = 0; i < 11; i++)
         {
-            last_block++;
             memset(message, 0, sizeof(message));
             sprintf((char *)message, "Hola Octavio %d", i);
-            SD_WriteSingleBlock(&card, last_block, message);
+            SD_WriteSingleBlock(&card, ++last_block, message);
         }
 
         lcd_display_clear();
@@ -130,7 +84,7 @@ int main(void)
         lcd_set_cursor(1, 1);
         lcd_print_string(buffer);
         SD_ReadCSD(&card, csd);
-        sprintf((char *)message, "%ld Mb", (uint32_t)card.capacity);
+        sprintf((char *)message, "%ld Mb", (uint32_t)card.capacity_mib);
         lcd_set_cursor(2, 1);
         lcd_print_string(message);
         // lcd_print_char(LCD_HEART);

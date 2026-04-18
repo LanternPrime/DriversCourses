@@ -7,6 +7,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "stm32f411xx_gpio_driver.h"
@@ -17,6 +18,8 @@
 
 #ifndef INC_STM32F411RETX_H_
 #define INC_STM32F411RETX_H_
+
+#define SYSTICK_CLOCK 16000000ULL
 
 #define __vo   volatile
 #define __weak __attribute__((weak))
@@ -35,6 +38,10 @@
 
 // ARM CORTEX Mx Processor NVIC Priority Register Addr
 #define NVIC_IPR_ADDR ((__vo uint32_t *)0xE000E400)
+
+// ARM CORTEX Mx Processor SysTick Registers Addr
+#define SYST_CSR ((uint32_t *)0xE000E010)
+#define SYST_RVR ((uint32_t *)0xE000E014)
 
 #define NO_PR_BITS_IMP 4
 
